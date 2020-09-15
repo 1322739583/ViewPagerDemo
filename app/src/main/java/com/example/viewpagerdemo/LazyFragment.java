@@ -1,6 +1,7 @@
 package com.example.viewpagerdemo;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,9 @@ public abstract class LazyFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (isViewCreated) {
+        if (!isViewCreated) {
             if (rootView == null) {
-                inflater.inflate(getLayoutRes(), container, false);
+              rootView=  inflater.inflate(getLayoutRes(), container, false);
             }
         }
         initView(rootView);
@@ -34,6 +35,7 @@ public abstract class LazyFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        Log.d("LazyFragment", "setUserVisibleHint--" + isVisibleToUser);
         if (isVisibleToUser) {
             dispatchUserVisibleHint(true);
         } else {
@@ -44,18 +46,16 @@ public abstract class LazyFragment extends Fragment {
     private void dispatchUserVisibleHint(boolean isVisible) {
         if (isVisible) {
             onFragmentLoad();
+
         } else {
             onFragmentStop();
         }
     }
 
-    protected void onFragmentLoad() {
+    protected abstract void onFragmentLoad() ;
 
-    }
 
-    protected void onFragmentStop() {
-
-    }
+    protected abstract void onFragmentStop() ;
 
 
 }

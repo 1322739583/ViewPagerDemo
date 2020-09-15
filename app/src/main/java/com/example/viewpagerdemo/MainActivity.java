@@ -32,5 +32,8 @@ public class MainActivity extends AppCompatActivity {
         fragments.add(blankFragment4);
         fragments.add(blankFragment5);
         viewPager.setAdapter(new MyAdapter(getSupportFragmentManager(), fragments));
+
     }
+
+
 }

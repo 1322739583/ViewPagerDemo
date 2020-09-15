@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment;
  * Use the {@link BlankFragment5#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class BlankFragment5 extends Fragment {
+public class BlankFragment5 extends LazyFragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -56,12 +56,32 @@ public class BlankFragment5 extends Fragment {
         }
     }
 
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        // Inflate the layout for this fragment
+//        Log.d("BlankFragment5", "onCreateView");
+//        return inflater.inflate(R.layout.fragment_blank5, container, false);
+//    }
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        Log.d("BlankFragment5", "onCreateView");
-        return inflater.inflate(R.layout.fragment_blank5, container, false);
+    protected int getLayoutRes() {
+        return R.layout.fragment_blank5;
+    }
+
+    @Override
+    protected void initView(View rootView) {
+
+    }
+
+    @Override
+    protected void onFragmentLoad() {
+        Log.d("BlankFragment5", "更新数据");
+    }
+
+    @Override
+    protected void onFragmentStop() {
+        Log.d("BlankFragment5", "停止加载数据");
     }
 
     @Override
