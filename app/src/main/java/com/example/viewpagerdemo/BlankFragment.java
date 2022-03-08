@@ -1,13 +1,22 @@
 package com.example.viewpagerdemo;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.example.viewpagerdemo.adapter.Adapter;
+import com.example.viewpagerdemo.adapter.ImageAdapter;
+import com.google.android.material.snackbar.Snackbar;
+import com.youth.banner.Banner;
+import com.youth.banner.indicator.CircleIndicator;
+import com.youth.banner.util.LogUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -21,9 +30,21 @@ public class BlankFragment extends LazyFragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    Banner banner;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+
+    RecyclerView recycler;
+
+    List<String> data;
+
+    private int[] imgs = new int[]{
+            R.mipmap.banner1, R.mipmap.banner2, R.mipmap.banner3
+    };
+
 
     public BlankFragment() {
         // Required empty public constructor
@@ -50,6 +71,9 @@ public class BlankFragment extends LazyFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d("BlankFragment", "getContext():" + getContext());
+
+
         Log.d("BlankFragment1", "onCreate");
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
@@ -72,7 +96,31 @@ public class BlankFragment extends LazyFragment {
 
     @Override
     protected void initView(View rootView) {
+        //  ViewPager vpBanner = rootView.findViewById(R.id.vpBanner);
 
+        banner=rootView.findViewById(R.id.banner);
+        recycler=rootView.findViewById(R.id.recyclerView);
+
+        ImageAdapter adapter = new ImageAdapter(DataBean.getTestData2());
+
+        banner.setAdapter(adapter)
+                .addBannerLifecycleObserver(this)//添加生命周期观察者
+                .setIndicator(new CircleIndicator(getContext()))//设置指示器
+                .setOnBannerListener((data, position) -> {
+                    Snackbar.make(banner, ((DataBean) data).title, Snackbar.LENGTH_SHORT).show();
+                    LogUtils.d("position：" + position);
+                });
+
+        data=new ArrayList<>();
+
+        for (int i = 0; i <20 ; i++) {
+            data.add("item"+i);
+        }
+
+        recycler.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recycler.setAdapter(new Adapter(R.layout.activity_main2_item, data));
+
+        //vpBanner.setAdapter(new BannerAdapter(getContext(),imgs));
     }
 
     @Override
